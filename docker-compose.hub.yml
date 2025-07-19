@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  # 后端服务 - 使用Docker Hub镜像
+  backend:
+    image: your-dockerhub-username/calorie-checker-backend:latest
+    container_name: calorie-checker-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app
+      - ENVIRONMENT=production
+    restart: unless-stopped
+    networks:
+      - calorie-network
+
+  # 前端服务 - 使用Docker Hub镜像
+  frontend:
+    image: your-dockerhub-username/calorie-checker-frontend:latest
+    container_name: calorie-checker-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - calorie-network
+
+networks:
+  calorie-network:
+    driver: bridge
+# 注意：
+# 1. 将 "your-dockerhub-username" 替换为你的实际Docker Hub用户名
+# 2. 如果需要指定版本，将 ":latest" 改为 ":v1.0" 等具体版本号

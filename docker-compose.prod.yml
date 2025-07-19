@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  backend:
+    image: nn1044746809/calorie-checker-backend:latest
+    container_name: calorie-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app
+    restart: unless-stopped
+    networks:
+      - calorie-network
+
+  frontend:
+    image: nn1044746809/calorie-checker-frontend:latest
+    container_name: calorie-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - calorie-network
+
+networks:
+  calorie-network:
+    driver: bridge
